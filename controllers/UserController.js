@@ -21,11 +21,11 @@ const login = async (req, res) => {
         
         // check the password sended by the user with the password saved in the schema
         const checkPassword = await bcrypt.compare(password, user.password);
-        if(!checkPassword) return res.status(401).json({result:false, message: "La password inserita non è sbagliata"});
+        if(!checkPassword) return res.status(401).json({result:false, message: "La password inserita è sbagliata"});
 
         // create JWT
         const token = jwt.sign(
-            {userId: user.id, role: user.role},
+            {userId: user.id, role: user.role, username: user.username},
             process.env.SECRET_JWT,
             {expiresIn: "2h"}
         )
