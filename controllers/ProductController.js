@@ -5,3 +5,7 @@ const index = async () => {
     const products = await Product.find();
     res.json({products: products});
 }
+
+module.exports = {
+    index
+}
