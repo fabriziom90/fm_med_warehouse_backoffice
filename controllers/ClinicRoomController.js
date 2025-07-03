@@ -83,7 +83,6 @@ const destroy = async (req, res) => {
         }
         
         res.status(200).json({ result: true, message: 'Stanza cancellata con successo'})
-        res.json('done');
     }
     catch(err){
         res.status(500).json({
