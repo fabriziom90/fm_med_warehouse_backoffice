@@ -11,5 +11,6 @@ router.post('/store', authMiddleware, [
     check('name').notEmpty().trim().withMessage('Devi inserire il nome della stanza')
 ], ClinicRoomController.store);
 router.patch('/:id/update', authMiddleware, ClinicRoomController.update);
+router.delete('/delete/:id', authMiddleware, ClinicRoomController.destroy);
 
 module.exports = router;
