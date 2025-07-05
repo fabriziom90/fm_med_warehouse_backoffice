@@ -7,7 +7,7 @@ const index = async (req, res) => {
     res.json({clinicRooms: clinicRooms});
 }
 
-const show = async (req, res) => {
+const get = async (req, res) => {
     const id = req.params.id;
     const clinicRoom = await ClinicRoom.findById(id);
     
@@ -37,7 +37,7 @@ const store = async (req, res) => {
     catch(err){
         res.status(500).json({
             result: false,
-            message: 'Errore durante la fase di inserimento. Contattare l\'amministratore.'
+            message: 'Errore durante la fase di inserimento. Contattare l\'amministratore. '+err
         })
     }
 }
@@ -62,7 +62,7 @@ const update = async (req, res) => {
         }
         
 
-        res.status(201).json({
+        res.status(200).json({
             result: true,
             message: "Stanza modificata con successo"
         })
@@ -70,7 +70,7 @@ const update = async (req, res) => {
     catch(err){
         res.status(500).json({
             result: false,
-            message: 'Errore durante la fase di inserimento. Contattare l\'amministratore.'
+            message: 'Errore durante la fase di inserimento. Contattare l\'amministratore. '+err
         })
     }
 }
@@ -88,14 +88,14 @@ const destroy = async (req, res) => {
     catch(err){
         res.status(500).json({
             result: false,
-            message: "Cancellazione non avvenuta. Contattare l'amministratore"
+            message: "Cancellazione non avvenuta. Contattare l'amministratore. "+err
         })
     }
 }
 
 module.exports = {
     index,
-    show,
+    get,
     store,
     update,
     destroy

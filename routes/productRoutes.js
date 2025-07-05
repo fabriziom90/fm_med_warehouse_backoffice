@@ -6,5 +6,13 @@ const ProductController = require('../controllers/ProductController');
 const router = express.Router();
 
 router.get('/', authMiddleware, ProductController.index);
+router.get('/:id/get', authMiddleware, ProductController.get);
+router.post('/store', authMiddleware, [
+    check('name').notEmpty().trim().withMessage('Devi inserire il nome del prodotto.')
+], ProductController.store);
+router.patch('/:id/update', authMiddleware, [
+    check('name').notEmpty().trim().withMessage('Devi inserire il nome del prodotto.')
+], ProductController.update);
+router.delete('/delete/:id', authMiddleware, ProductController.destroy);
 
 module.exports = router;
