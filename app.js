@@ -14,6 +14,8 @@ const userRouter = require('./routes/userRoutes');
 const clinicRoomRouter = require('./routes/clinicRoomRoutes');
 const productRouter = require('./routes/productRoutes');
 const drugRouter = require('./routes/drugRoutes');
+const inventoryProductRouter = require('./routes/inventoryProductRoutes');
+const inventoryDrugRouter = require('./routes/inventoryDrugRoutes');
 
 // middleware parsing body requests
 app.use(express.json())
@@ -36,6 +38,8 @@ app.use('/api/users', userRouter);
 app.use('/api/clinic_rooms', clinicRoomRouter);
 app.use('/api/products', productRouter);
 app.use('/api/drugs', drugRouter);
+app.use('/api/inventory_products', inventoryProductRouter);
+app.use('/api/inventory_drugs', inventoryDrugRouter);
 
 // listening
 app.listen(port, (req, res) => {
