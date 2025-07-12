@@ -78,6 +78,8 @@ const destroy = async (req, res) => {
         return res.status(404).json({result: false, message: "Il medicinale non è stato trovato"})
     }
 
+    await InventoryDrug.deleteMany({ drug: drugId})
+
     res.status(200).json({
         result: true,
         message: "Il medicinale è stato cancellato correttamente"

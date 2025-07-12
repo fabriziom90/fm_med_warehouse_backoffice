@@ -5,5 +5,7 @@ const InventoryProductController = require('../controllers/InventoryProductContr
 const router = express.Router();
 
 router.get('/:id', authMiddleware, InventoryProductController.index);
+router.patch('/:id/edit_quantity', authMiddleware, InventoryProductController.editQuantity);
+router.patch('/:id/edit_expiration_date', authMiddleware, InventoryProductController.editExpirationDate);
 
 module.exports = router;

@@ -81,8 +81,10 @@ const destroy = async (req, res) => {
     const deleted = await Product.findByIdAndDelete(productId);
 
     if(!deleted){
-        res.status(404).json({ result: false, message: "Prodotto non trovato"})
+        return res.status(404).json({ result: false, message: "Prodotto non trovato"})
     }
+
+    await InventoryProduct.deleteMany({ product: productId})
 
     res.status(200).json({
         result: true,
