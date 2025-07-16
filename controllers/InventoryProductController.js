@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator');
 const InventoryProduct = require('../models/InventoryProduct.js');
 
 const index = async (req, res) => {
@@ -36,8 +37,37 @@ const editExpirationDate = async (req, res) => {
     })
 }
 
+const createInventoryProduct = async (req, res) => {
+    console.log(req.body);
+    try{
+        const validation = validationResult(req)
+        
+        if(!validation.isEmpty()){
+            return res.status(500).json({ result: true, message: validation.errors[0].msg});
+        }
+
+        const { product, roomId, quantity, expirationDate } = req.body;
+
+        const newInventoryProduct = new InventoryProduct({product, clinicRoom: roomId, quantity, expirationDate });
+        await newInventoryProduct.save();
+
+        res.status(200).json({
+            result: true,
+            message: "Nuovo inserimento di prodotto completato correttamente"
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            result: false,
+            message: 'Errore durante l\'inserimento. Contattare l\'amministratore del sistema. '+err
+        });
+    }
+    
+}
+
 module.exports = {
     index,
     editQuantity,
-    editExpirationDate
+    editExpirationDate,
+    createInventoryProduct
 }
