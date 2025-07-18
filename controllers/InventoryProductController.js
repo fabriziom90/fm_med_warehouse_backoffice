@@ -38,7 +38,6 @@ const editExpirationDate = async (req, res) => {
 }
 
 const createInventoryProduct = async (req, res) => {
-    console.log(req.body);
     try{
         const validation = validationResult(req)
         
@@ -65,9 +64,25 @@ const createInventoryProduct = async (req, res) => {
     
 }
 
+const deleteInventoryProduct = async (req, res) => {
+    const productId = req.params.id;
+
+    const deleted = await InventoryProduct.findByIdAndDelete(productId);
+
+    if(!deleted){
+        return res.status(404).json({ message: 'Prodotto dell\'inventario non trovato'});
+    }
+
+    res.status(200).json({
+        result: true,
+        message: 'Prodotto dell\'inventario cancellato correttamente'
+    })
+}
+
 module.exports = {
     index,
     editQuantity,
     editExpirationDate,
-    createInventoryProduct
+    createInventoryProduct,
+    deleteInventoryProduct
 }
