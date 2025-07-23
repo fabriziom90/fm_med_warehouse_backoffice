@@ -22,7 +22,7 @@ const dashboardRouter = require('./routes/dashboardRoutes');
 app.use(express.json())
 app.use(cors({
   // origin: 'http://localhost:5173',
-  origin: 'https://fm-med-warehouse-frontoffice.onrender.com/',
+  origin: 'https://fm-med-warehouse-frontoffice.onrender.com',
   credentials: true // in case you are using cookie or auth header
 }));
 
