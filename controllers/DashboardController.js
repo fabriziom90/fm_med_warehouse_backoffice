@@ -14,7 +14,7 @@ const index = async (req, res) => {
         const inventoryProductsQuantity = await InventoryProduct.find({
             clinicRoom: roomId,
             $and: [
-                {quantity: { $lte: 5}},
+                {quantity: { $lte: 1}},
             ]
             
         }).populate('product', 'name').exec()
@@ -30,7 +30,7 @@ const index = async (req, res) => {
         const inventoryDrugsQuantity = await InventoryDrugs.find({
             clinicRoom: roomId,
             $and: [
-                {quantity: { $lte: 5}},
+                {quantity: { $lte: 1}},
                 // {expirationDate: { $lte: in15Days }}
             ]
         }).populate('drug', 'name').exec()
