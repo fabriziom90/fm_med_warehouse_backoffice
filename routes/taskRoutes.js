@@ -23,7 +23,8 @@ router.patch('/:id', authMiddleware,  [
           throw new Error('La data deve essere futura');
         }
         return true;
-      })
+      }),
+    check('hour').notEmpty().withMessage('Devi inserire l’orario').matches(/^([01]\d|2[0-3]):([0-5]\d)$/).withMessage('L’orario deve essere valido (HH:mm)')
 ], TaskController.update);
 router.delete('/:id', authMiddleware, TaskController.destroy);
 
