@@ -44,7 +44,7 @@ app.use('/api/drugs', drugRouter);
 app.use('/api/inventory_products', inventoryProductRouter);
 app.use('/api/inventory_drugs', inventoryDrugRouter);
 app.use('/api/dashboard', dashboardRouter);
-app.use('/api/task', taskRouter);
+app.use('/api/tasks', taskRouter);
 
 // listening
 app.listen(port, (req, res) => {
