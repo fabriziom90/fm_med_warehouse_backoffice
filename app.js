@@ -17,6 +17,7 @@ const drugRouter = require('./routes/drugRoutes');
 const inventoryProductRouter = require('./routes/inventoryProductRoutes');
 const inventoryDrugRouter = require('./routes/inventoryDrugRoutes');
 const dashboardRouter = require('./routes/dashboardRoutes');
+const taskRouter = require('./routes/taskRoutes');
 
 // middleware parsing body requests
 app.use(express.json())
@@ -43,6 +44,7 @@ app.use('/api/drugs', drugRouter);
 app.use('/api/inventory_products', inventoryProductRouter);
 app.use('/api/inventory_drugs', inventoryDrugRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/task', taskRouter);
 
 // listening
 app.listen(port, (req, res) => {
