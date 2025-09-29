@@ -22,8 +22,8 @@ const taskRouter = require('./routes/taskRoutes');
 // middleware parsing body requests
 app.use(express.json())
 app.use(cors({
-  // origin: 'http://localhost:5173',
-  origin: 'https://fm-med-warehouse-frontoffice.onrender.com',
+  origin: 'http://localhost:5173',
+  // or0igin: 'https://fm-med-warehouse-frontoffice.onrender.com',
   credentials: true // in case you are using cookie or auth header
 }));
 

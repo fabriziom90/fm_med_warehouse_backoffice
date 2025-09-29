@@ -10,7 +10,7 @@ const index = async (req, res) => {
 // get
 const get = async (req, res) => {
     const { id } = req.params;
-    const task = await Task.findById();
+    const task = await Task.findById(id);
     res.json({ task: task});
 }
 
@@ -22,9 +22,9 @@ const store = async (req, res) => {
             return res.status(200).json({result: false, message:validations.errors[0].msg})
         }
 
-        const { text, date, done } = req.body
-
-        const newTask = new Task({text, date, done});
+        const { title, note, start, end, done } = req.body
+        
+        const newTask = new Task({title, start, end, note, done});
 
         await newTask.save();
 
@@ -44,16 +44,17 @@ const store = async (req, res) => {
 // update
 const update = async (req, res) => {
     try{
+        const id  = req.params.id;
         const validations = validationResult(req);
 
         if(!validations.isEmpty()){
-            res.status(200).json({ result: false, message: validations.errors[0].msg})
+            return res.status(200).json({result: false, message:validations.errors[0].msg})
         }
 
-        const { id } = req.params;
-        const { text, date, done } = req.body;
+        const { title, note, start, end, done } = req.body
+        
 
-        const updated = await Task.findByIdAndUpdate(id, { text, date, done});
+        const updated = await Task.findByIdAndUpdate(id, { title, start, end, note, done});
 
         if(!updated){
             res.status(404).json({ result: false, message: "Task non trovato"});
@@ -76,8 +77,8 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
     const { id } = req.params;
 
-    const deleted = Task.findByIdAndDelete(id);
-
+    const deleted = await Task.findByIdAndDelete(id);
+    
     if(!deleted){
         res.status(404).json({ result: false, message: "Task non trovato"});
     }
@@ -88,10 +89,33 @@ const destroy = async (req, res) => {
     })
 }
 
+// done task - patch
+const doneTask = async (req, res) => {
+    const { id } = req.params;
+
+    const task = await Task.findById(id);
+
+    if(!task){
+        res.status(404).json({
+            result: false,
+            message: "Task non trovato"
+        })
+    }
+
+    task.done = !task.done;
+    await task.save();
+
+    res.status(200).json({
+        result: true,
+        message: "Hai modificato lo stato del task correttamente"
+    })
+}
+
 module.exports = {
     index,
     get, 
     store,
     update,
-    destroy
+    destroy,
+    doneTask
 }

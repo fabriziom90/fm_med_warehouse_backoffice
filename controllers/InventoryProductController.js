@@ -39,10 +39,10 @@ const editExpirationDate = async (req, res) => {
 
 const createInventoryProduct = async (req, res) => {
     try{
-        const validation = validationResult(req)
+        const validations = validationResult(req)
         
-        if(!validation.isEmpty()){
-            return res.status(500).json({ result: true, message: validation.errors[0].msg});
+        if(!validations.isEmpty()){
+            return res.status(200).json({ result: true, message: validation.errors[0].msg});
         }
 
         const { product, roomId, quantity, expirationDate } = req.body;
