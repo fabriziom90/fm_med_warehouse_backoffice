@@ -32,12 +32,7 @@ router.put('/:id', authMiddleware,  [
         }
         return true;
       }),
-    check('end').notEmpty().withMessage("Devi inserire la data").isISO8601().withMessage('La data deve essere valida (YYYY-MM-DD)').toDate().custom((value) => {
-        if (value <= new Date()) {
-          throw new Error('La data deve essere futura');
-        }
-        return true;
-      })
+    check('end').notEmpty().withMessage("Devi inserire la data").isISO8601().withMessage('La data deve essere valida (YYYY-MM-DD)').toDate()
 ], TaskController.update);
 router.delete('/:id', authMiddleware, TaskController.destroy);
 router.patch('/:id/done-task', authMiddleware, TaskController.doneTask);
