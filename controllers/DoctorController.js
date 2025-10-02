@@ -3,7 +3,7 @@ const Doctor = require("../models/Doctor");
 
 // index
 const index = async (req, res) => {
-    const doctors = await Doctor.findAll();
+    const doctors = await Doctor.find();
     res.status(200).json({doctors: doctors})
 }
 
@@ -17,11 +17,12 @@ const show = async (req, res) => {
 
 // store
 const store = async (req, res) => {
+    
     try{
-        const validations = validationResult();
+        const validations = validationResult(req);
 
         if(!validations.isEmpty()){
-            res.status(200).json({result: false, message: validations.errors[0].msg})
+            return res.status(200).json({result: false, message: validations.errors[0].msg})
         }
 
         const { name, surname, specialty } = req.body;
@@ -45,24 +46,33 @@ const store = async (req, res) => {
 
 // update
 const update = (req, res) => {
-    const validations = validationResult();
-    if(!validations.isEmpty()){
-        res.status(200).json({ result: false, message: validations.errors[0].msg})
+    try{
+        const validations = validationResult(req);
+        if(!validations.isEmpty()){
+            return res.status(200).json({ result: false, message: validations.errors[0].msg})
+        }
+    
+        const { id } = req.params;
+        const { name, surname, specialty } = req.body;
+    
+        const doctor = Doctor.findByIdAndUpdate(id, { name, surname, specialty});
+    
+        if(!doctor){
+            return res.status(404).json({ result: false, message: "Dottore non trovato"});
+        }
+    
+        res.status(200).json({
+            result: true,
+            message: "Dottore modificato con successo"
+        });
+
     }
-
-    const { id } = req.params;
-    const { name, surname, specialty } = req.body;
-
-    const doctor = Doctor.findByIdAndUpdate(id, { name, surname, specialty});
-
-    if(!doctor){
-        res.status(404).json({ result: false, message: "Dottore non trovato"});
+    catch(err){
+        res.status(500).json({
+            result: false,
+            message: "Errore durante l'inserimento. Contattare l\'amministratore: "+err
+        })
     }
-
-    res.status(200).json({
-        result: true,
-        message: "Dottore modificato con successo"
-    });
 }
 
 // destroy
@@ -72,7 +82,7 @@ const destroy = (req, res) => {
     const doctor = Doctor.findByIdAndDelete(id);
 
     if(!doctor){
-        res.status(404).json({ result: false, message: "Dottore non trovato"})
+        return res.status(404).json({ result: false, message: "Dottore non trovato"})
     }
 
     res.status(200).json({
