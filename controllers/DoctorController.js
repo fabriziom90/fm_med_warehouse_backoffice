@@ -45,7 +45,7 @@ const store = async (req, res) => {
 }
 
 // update
-const update = (req, res) => {
+const update = async (req, res) => {
     try{
         const validations = validationResult(req);
         if(!validations.isEmpty()){
@@ -55,8 +55,8 @@ const update = (req, res) => {
         const { id } = req.params;
         const { name, surname, specialty } = req.body;
     
-        const doctor = Doctor.findByIdAndUpdate(id, { name, surname, specialty});
-    
+        const doctor = await Doctor.findByIdAndUpdate(id, { name, surname, specialty});
+        
         if(!doctor){
             return res.status(404).json({ result: false, message: "Dottore non trovato"});
         }
@@ -76,10 +76,10 @@ const update = (req, res) => {
 }
 
 // destroy
-const destroy = (req, res) => {
+const destroy = async (req, res) => {
     const { id } = req.params;
 
-    const doctor = Doctor.findByIdAndDelete(id);
+    const doctor = await Doctor.findByIdAndDelete(id);
 
     if(!doctor){
         return res.status(404).json({ result: false, message: "Dottore non trovato"})
@@ -87,7 +87,7 @@ const destroy = (req, res) => {
 
     res.status(200).json({
         result: true,
-        message: "Dottore trovato correttamente"
+        message: "Dottore cancellato correttamente"
     })
 }
 

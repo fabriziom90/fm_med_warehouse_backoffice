@@ -17,6 +17,6 @@ router.put('/:id', authMiddleware, [
     check('surname').notEmpty().trim().withMessage("Devi inserire il cognome del medico"),
     check('specialty').notEmpty().trim().withMessage("Devi inserire la specializzazione del medico")
 ], DoctorController.update);
-router.delete('/:id', authMiddleware, DoctorController.destroy);
+router.delete('/delete/:id', authMiddleware, DoctorController.destroy);
 
 module.exports = router;
