@@ -1,7 +1,78 @@
 const { validationResult } = require('express-validator');
 const Patient = require('../models/Patient');
 
-const index = (req, res) => {
-    const patients = Patient.find();
+const index = async (req, res) => {
+    const patients = await Patient.find();
     res.json({ patients: patients});
 } 
+
+const get = async (req, res) => {
+    const { id } = req.params;
+    const patient = await Patient.findById(id);
+    
+    res.status(200).json({ patient: patient})
+}
+
+const store = async (req, res) => {
+    const validations = validationResult(req);
+    
+    if(!validations.isEmpty()){
+        return res.status(200).json({ result: false, message: validations.errors[0].msg})
+    }
+
+    const { name, surname } = req.body;
+
+    const newPatient = new Patient({name, surname});
+
+    await newPatient.save();
+
+    res.status(200).json({
+        result: true,
+        message: "Paziente inserito con successo"
+    });
+}
+
+const update = async (req, res) => {
+    const validations = validationResult(req);
+
+    if(!validations.isEmpty()){
+        return res.status(200).json({ result: false, message: validations.errors[0].msg});
+    }
+
+    const { id } = req.params;
+    const { name, surname } = req.body;
+
+    const patient = await Patient.findByIdAndUpdate(id, { name, surname });
+
+    if(!patient){
+        return res.status(200).json({ result: false, message: validations.errors[0].msg})
+    }
+
+    res.status(200).json({
+        result: true,
+        message: "Paziente modificato con successo"
+    })
+}
+
+const destroy = (req, res) => {
+    const { id } = req.params;
+
+    const deleted = Patient.findByIdAndDelete(id);
+
+    if(!deleted){
+        return res.status(200).json({ result: false, message: "Paziente non trovato"});
+    }
+
+    res.statu(200).json({
+        result: true,
+        message: "Paziente cancellato correttamente"
+    })
+}
+
+module.exports = {
+    index,
+    get,
+    store,
+    update,
+    destroy
+}
