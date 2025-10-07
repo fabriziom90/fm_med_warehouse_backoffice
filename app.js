@@ -18,12 +18,14 @@ const inventoryProductRouter = require('./routes/inventoryProductRoutes');
 const inventoryDrugRouter = require('./routes/inventoryDrugRoutes');
 const dashboardRouter = require('./routes/dashboardRoutes');
 const taskRouter = require('./routes/taskRoutes');
+const doctorRouter = require('./routes/doctorRoutes');
+const patientRouter = require('./routes/patientRoutes')
 
 // middleware parsing body requests
 app.use(express.json())
 app.use(cors({
-  // origin: 'http://localhost:5173',
-  origin: 'https://fm-med-warehouse-frontoffice.onrender.com',
+  origin: process.env.FRONTEND_URI,
+  // origin: 'https://fm-med-warehouse-frontoffice.onrender.com',
   credentials: true // in case you are using cookie or auth header
 }));
 
@@ -45,6 +47,8 @@ app.use('/api/inventory_products', inventoryProductRouter);
 app.use('/api/inventory_drugs', inventoryDrugRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/tasks', taskRouter);
+app.use('/api/doctors', doctorRouter);
+app.use('/api/patients', patientRouter);
 
 // listening
 app.listen(port, (req, res) => {

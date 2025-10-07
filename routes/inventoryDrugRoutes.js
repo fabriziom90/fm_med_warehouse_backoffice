@@ -13,6 +13,6 @@ router.post('/create', [
     check('quantity').notEmpty().trim().withMessage('Devi inserire la quantità').isNumeric().withMessage('Devi inserire un valore numerico'),
     check('expirationDate').notEmpty().trim().withMessage('Devi inserire la data di scadenza').isISO8601().withMessage('La scadenza deve essere una data valida')
 ], authMiddleware, InventoryDrugController.createInventoryDrug);
-router.delete('/:id/delete', authMiddleware, InventoryDrugController.deleteInventoryDrug);
+router.delete('/delete/:id', authMiddleware, InventoryDrugController.deleteInventoryDrug);
 
 module.exports = router;

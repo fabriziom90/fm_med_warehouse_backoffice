@@ -11,11 +11,11 @@ router.post('/', authMiddleware, [
     check('name').notEmpty().trim().withMessage('Devi inserire il nome del paziente'),
     check('surname').notEmpty().trim().withMessage('Devi inserire il cognome del paziente')
 ], PatientController.store);
-router.put('/:id/update', authMiddleware, [
+router.put('/:id', authMiddleware, [
     check('name').notEmpty().trim().withMessage('Devi inserire il nome del paziente'),
     check('surname').notEmpty().trim().withMessage('Devi inserire il cognome del paziente')
 ], PatientController.update);
-router.delete('/:id', authMiddleware, PatientController.destroy);
+router.delete('/delete/:id', authMiddleware, PatientController.destroy);
 
 module.exports = router;
 
