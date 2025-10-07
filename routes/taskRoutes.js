@@ -34,7 +34,7 @@ router.put('/:id', authMiddleware,  [
       }),
     check('end').notEmpty().withMessage("Devi inserire la data").isISO8601().withMessage('La data deve essere valida (YYYY-MM-DD)').toDate()
 ], TaskController.update);
-router.delete('/:id', authMiddleware, TaskController.destroy);
+router.delete('/delete/:id', authMiddleware, TaskController.destroy);
 router.patch('/:id/done-task', authMiddleware, TaskController.doneTask);
 
 module.exports = router;

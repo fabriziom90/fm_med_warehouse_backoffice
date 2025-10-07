@@ -54,16 +54,16 @@ const update = async (req, res) => {
     })
 }
 
-const destroy = (req, res) => {
+const destroy = async (req, res) => {
     const { id } = req.params;
 
-    const deleted = Patient.findByIdAndDelete(id);
-
+    const deleted = await Patient.findByIdAndDelete(id);
+    
     if(!deleted){
         return res.status(200).json({ result: false, message: "Paziente non trovato"});
     }
 
-    res.statu(200).json({
+    res.status(200).json({
         result: true,
         message: "Paziente cancellato correttamente"
     })

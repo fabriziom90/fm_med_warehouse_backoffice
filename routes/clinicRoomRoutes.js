@@ -10,7 +10,7 @@ router.get('/:id/get', authMiddleware, ClinicRoomController.get);
 router.post('/store', authMiddleware, [
     check('name').notEmpty().trim().withMessage('Devi inserire il nome della stanza')
 ], ClinicRoomController.store);
-router.patch('/:id/update', authMiddleware, [check('name').notEmpty().trim().withMessage('Devi inserire il nome della stanza')], ClinicRoomController.update);
+router.patch('/:id', authMiddleware, [check('name').notEmpty().trim().withMessage('Devi inserire il nome della stanza')], ClinicRoomController.update);
 router.delete('/delete/:id', authMiddleware, ClinicRoomController.destroy);
 
 module.exports = router;
