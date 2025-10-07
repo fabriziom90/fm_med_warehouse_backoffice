@@ -23,6 +23,7 @@ const patientRouter = require('./routes/patientRoutes')
 
 // middleware parsing body requests
 app.use(express.json())
+console.log("CORS allowed origin:", process.env.FRONTEND_URI);
 app.use(cors({
   origin: process.env.FRONTEND_URI,
   // origin: 'https://fm-med-warehouse-frontoffice.onrender.com',
