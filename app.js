@@ -19,11 +19,12 @@ const inventoryDrugRouter = require('./routes/inventoryDrugRoutes');
 const dashboardRouter = require('./routes/dashboardRoutes');
 const taskRouter = require('./routes/taskRoutes');
 const doctorRouter = require('./routes/doctorRoutes');
-const patientRouter = require('./routes/patientRoutes')
+const patientRouter = require('./routes/patientRoutes');
+const medicalAppointmentRouter = require('./routes/medicalAppointmentRoutes');
 
 // middleware parsing body requests
 app.use(express.json())
-console.log("CORS allowed origin:", process.env.FRONTEND_URI);
+
 app.use(cors({
   origin: process.env.FRONTEND_URI,
   // origin: 'https://fm-med-warehouse-frontoffice.onrender.com',
@@ -50,6 +51,7 @@ app.use('/api/dashboard', dashboardRouter);
 app.use('/api/tasks', taskRouter);
 app.use('/api/doctors', doctorRouter);
 app.use('/api/patients', patientRouter);
+app.use('/api/medical_appointments', medicalAppointmentRouter);
 
 // listening
 app.listen(port, (req, res) => {

@@ -14,44 +14,61 @@ const get = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    const validations = validationResult(req);
+    try{
+        const validations = validationResult(req);
+        
+        if(!validations.isEmpty()){
+            return res.status(200).json({ result: false, message: validations.errors[0].msg})
+        }
     
-    if(!validations.isEmpty()){
-        return res.status(200).json({ result: false, message: validations.errors[0].msg})
+        const { name, surname } = req.body;
+    
+        const newPatient = new Patient({name, surname});
+    
+        await newPatient.save();
+    
+        res.status(200).json({
+            result: true,
+            message: "Paziente inserito con successo"
+        });
     }
-
-    const { name, surname } = req.body;
-
-    const newPatient = new Patient({name, surname});
-
-    await newPatient.save();
-
-    res.status(200).json({
-        result: true,
-        message: "Paziente inserito con successo"
-    });
+    catch(err){
+        res.status(500).json({
+            result: false,
+            message: "Inserimento del paziente non completata. Contattare l'amministratore del sistema. "+err
+        })
+    }
 }
 
 const update = async (req, res) => {
-    const validations = validationResult(req);
+    try{
 
-    if(!validations.isEmpty()){
-        return res.status(200).json({ result: false, message: validations.errors[0].msg});
+        const validations = validationResult(req);
+    
+        if(!validations.isEmpty()){
+            return res.status(200).json({ result: false, message: validations.errors[0].msg});
+        }
+    
+        const { id } = req.params;
+        const { name, surname } = req.body;
+    
+        const patient = await Patient.findByIdAndUpdate(id, { name, surname });
+    
+        if(!patient){
+            return res.status(200).json({ result: false, message: "Paziente non trovato"})
+        }
+    
+        res.status(200).json({
+            result: true,
+            message: "Paziente modificato con successo"
+        })
     }
-
-    const { id } = req.params;
-    const { name, surname } = req.body;
-
-    const patient = await Patient.findByIdAndUpdate(id, { name, surname });
-
-    if(!patient){
-        return res.status(200).json({ result: false, message: validations.errors[0].msg})
+    catch(err){
+        return res.status(500).json({
+            result: false,
+            message: "Modifica del paziente non completata. Contattare l'amministratore del sistema. "+err
+        });
     }
-
-    res.status(200).json({
-        result: true,
-        message: "Paziente modificato con successo"
-    })
 }
 
 const destroy = async (req, res) => {
