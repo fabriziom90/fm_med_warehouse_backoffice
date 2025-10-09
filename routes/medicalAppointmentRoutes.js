@@ -7,10 +7,11 @@ const router = express.Router();
 
 router.get('/', authMiddleware, medicalAppointmentController.index);
 router.get('/:id', authMiddleware, medicalAppointmentController.get);
+router.get('/doctor/:id', authMiddleware, medicalAppointmentController.getByDoctor);
 router.post('/', authMiddleware, [
     check('doctor').notEmpty().trim().withMessage('Devi selezionare il medico'),
     check('patient').notEmpty().trim().withMessage('Devi selezionare il paziente'),
-    check('data').notEmpty().trim().withMessage('Devi inserire la data della visita').isISO8601().withMessage('La scadenza deve essere una data valida'),
+    check('date').notEmpty().trim().withMessage('Devi inserire la data della visita').isISO8601().withMessage('La scadenza deve essere una data valida'),
     check('invoiceNumber').notEmpty().trim().withMessage('Devi inserire il numero della fattura').isNumeric('Il valore del numero della fattura deve essere numerico'),
     check('service').notEmpty().trim().withMessage('Devi inserire la prestazione svolta'),
     check('total').notEmpty().trim().withMessage('Devi inserire il totale della fattura').isNumeric().withMessage('Il valore del totale della fattura deve essere numerico'),
@@ -21,7 +22,7 @@ router.post('/', authMiddleware, [
 router.put('/:id', authMiddleware, [
     check('doctor').notEmpty().trim().withMessage('Devi selezionare il medico'),
     check('patient').notEmpty().trim().withMessage('Devi selezionare il paziente'),
-    check('data').notEmpty().trim().withMessage('Devi inserire la data della visita').isISO8601().withMessage('La scadenza deve essere una data valida'),
+    check('date').notEmpty().trim().withMessage('Devi inserire la data della visita').isISO8601().withMessage('La scadenza deve essere una data valida'),
     check('invoiceNumber').notEmpty().trim().withMessage('Devi inserire il numero della fattura').isNumeric('Il valore del numero della fattura deve essere numerico'),
     check('service').notEmpty().trim().withMessage('Devi inserire la prestazione svolta'),
     check('total').notEmpty().trim().withMessage('Devi inserire il totale della fattura').isNumeric().withMessage('Il valore del totale della fattura deve essere numerico'),

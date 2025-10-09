@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const MedicalAppointmentsSchema = mongoose.Schema({
     doctor: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor", required: true},
     patient: { type: mongoose.Schema.Types.ObjectId, ref: "Patient", required: true},
-    data: { type: Date, required: true},
+    date: { type: Date, required: true},
     invoiceNumber: { type: Number, required: true},
     service: { type: String, required: true},
     total: { type: Number, required: true},

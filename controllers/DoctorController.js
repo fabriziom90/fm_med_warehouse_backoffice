@@ -33,7 +33,8 @@ const store = async (req, res) => {
 
         res.status(201).json({
             result: true,
-            message: "Dottore inserito con successo"
+            message: "Dottore inserito con successo",
+            doctor: newDoctor
         })
     }
     catch(err){

@@ -8,9 +8,20 @@ const index = async (req, res) => {
 
 const get = async (req, res) => {
     const {id} = req.params;
-    const MedicalAppointment = await MedicalAppointment.findById(id);
+    const medicalAppointment = await MedicalAppointment.findById(id);
 
-    res.staus(200).json({ MedicalAppointment: MedicalAppointment});
+    res.staus(200).json({ medicalAppointment: medicalAppointment});
+}
+
+const getByDoctor = async (req, res) => {
+    const doctorId = req.params.id;
+    
+    const medicalAppointments = await MedicalAppointment.find({ doctor: doctorId}).populate('patient', 'name surname').exec();
+
+    res.status(200).json({
+        medicalAppointments: medicalAppointments
+    })
+
 }
 
 const store = async (req, res) => {
@@ -25,9 +36,9 @@ const store = async (req, res) => {
             })
         }
     
-        const { doctor, patient, data, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
+        const { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
     
-        const newMedicalAppointment = new MedicalAppointment({ doctor, patient, data, acceptionNumber, invoiceNumber, service, total, serviceValue, fixedFee, percentageToDoctor, assignedAmount, withHoldingTax, netPayable});
+        const newMedicalAppointment = new MedicalAppointment({ doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
     
         await newMedicalAppointment.save();
     
@@ -60,7 +71,7 @@ const update = async (req, res) => {
         const {id} = req.params;
         const { doctor, patient, data, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
     
-        const medicalAppointment = await MedicalAppointment.findByIdAndUpdate(id, { doctor, patient, data, acceptionNumber, invoiceNumber, service, total, serviceValue, fixedFee, percentageToDoctor, assignedAmount, withHoldingTax, netPayable});
+        const medicalAppointment = await MedicalAppointment.findByIdAndUpdate(id, { doctor, patient, data, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
     
         if(!medicalAppointment){
             return res.status(200).json({
@@ -104,6 +115,7 @@ const destroy = async (req, res) => {
 module.exports = {
     index,
     get, 
+    getByDoctor,
     store,
     update,
     destroy
