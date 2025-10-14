@@ -24,6 +24,17 @@ const getByDoctor = async (req, res) => {
 
 }
 
+const getByPatient = async (req, res) => {
+    const patientId = req.params.id;
+    
+    const medicalAppointments = await MedicalAppointment.find({ patient: patientId}).populate('patient', 'name surname').exec();
+
+    res.status(200).json({
+        medicalAppointments: medicalAppointments
+    })
+
+}
+
 const store = async (req, res) => {
     try{
 
@@ -116,6 +127,7 @@ module.exports = {
     index,
     get, 
     getByDoctor,
+    getByPatient,
     store,
     update,
     destroy

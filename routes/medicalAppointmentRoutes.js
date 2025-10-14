@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/', authMiddleware, medicalAppointmentController.index);
 router.get('/:id', authMiddleware, medicalAppointmentController.get);
 router.get('/doctor/:id', authMiddleware, medicalAppointmentController.getByDoctor);
+router.get('/patient/:id', authMiddleware, medicalAppointmentController.getByPatient);
 router.post('/', authMiddleware, [
     check('doctor').notEmpty().trim().withMessage('Devi selezionare il medico'),
     check('patient').notEmpty().trim().withMessage('Devi selezionare il paziente'),
