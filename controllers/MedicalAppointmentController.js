@@ -10,7 +10,7 @@ const get = async (req, res) => {
     const {id} = req.params;
     const medicalAppointment = await MedicalAppointment.findById(id);
 
-    res.staus(200).json({ medicalAppointment: medicalAppointment});
+    res.status(200).json({ medicalAppointment: medicalAppointment});
 }
 
 const getByDoctor = async (req, res) => {
@@ -37,7 +37,7 @@ const store = async (req, res) => {
         }
     
         const { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
-    
+        
         const newMedicalAppointment = new MedicalAppointment({ doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
     
         await newMedicalAppointment.save();
@@ -69,9 +69,9 @@ const update = async (req, res) => {
         }
     
         const {id} = req.params;
-        const { doctor, patient, data, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
+        const { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
     
-        const medicalAppointment = await MedicalAppointment.findByIdAndUpdate(id, { doctor, patient, data, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
+        const medicalAppointment = await MedicalAppointment.findByIdAndUpdate(id, { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
     
         if(!medicalAppointment){
             return res.status(200).json({
@@ -82,7 +82,7 @@ const update = async (req, res) => {
     
         res.status(200).json({
             result: true,
-            message: "Appuntamento medico inserito con successo"
+            message: "Appuntamento medico modificato con successo"
         })
     }
     catch(err){
@@ -97,8 +97,8 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
     const { id } = req.params;
 
-    const deleted = MedicalAppointment.findByIdAndDelete(id);
-
+    const deleted = await MedicalAppointment.findByIdAndDelete(id);
+    console.log(deleted);
     if(!deleted){
         res.status(200).json({
             result: false,

@@ -30,6 +30,6 @@ router.put('/:id', authMiddleware, [
     check('percentageToDoctor').notEmpty().trim().withMessage('Devi inserire la percentuale del medico').isNumeric().withMessage('Il valore della percentuale del medico deve essere numerico'),
     check('assignedAmount').notEmpty().trim().withMessage('Devi inserire il valore della somma assegnata').isNumeric().withMessage('Il valore della somma assegnata deve essere numerico'),
 ], medicalAppointmentController.update);
-router.delete('/:id/delete', authMiddleware, medicalAppointmentController.destroy);
+router.delete('/delete/:id', authMiddleware, medicalAppointmentController.destroy);
 
 module.exports = router;
