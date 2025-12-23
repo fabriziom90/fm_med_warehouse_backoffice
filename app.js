@@ -21,6 +21,7 @@ const taskRouter = require('./routes/taskRoutes');
 const doctorRouter = require('./routes/doctorRoutes');
 const patientRouter = require('./routes/patientRoutes');
 const medicalAppointmentRouter = require('./routes/medicalAppointmentRoutes');
+const timeEntryRouter = require('./routes/timeEntryRoutes');
 
 // middleware parsing body requests
 app.use(express.json())
@@ -52,6 +53,7 @@ app.use('/api/tasks', taskRouter);
 app.use('/api/doctors', doctorRouter);
 app.use('/api/patients', patientRouter);
 app.use('/api/medical_appointments', medicalAppointmentRouter);
+app.use('/api/time_entries', timeEntryRouter);
 
 // listening
 app.listen(port, (req, res) => {
