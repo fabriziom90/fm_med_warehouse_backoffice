@@ -19,7 +19,7 @@ const inventoryDrugRouter = require('./routes/inventoryDrugRoutes');
 const dashboardRouter = require('./routes/dashboardRoutes');
 const taskRouter = require('./routes/taskRoutes');
 const doctorRouter = require('./routes/doctorRoutes');
-const patientRouter = require('./routes/patientRoutes');
+const serviceRouter = require('./routes/serviceRoutes');
 const medicalAppointmentRouter = require('./routes/medicalAppointmentRoutes');
 const timeEntryRouter = require('./routes/timeEntryRoutes');
 
@@ -51,7 +51,7 @@ app.use('/api/inventory_drugs', inventoryDrugRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/tasks', taskRouter);
 app.use('/api/doctors', doctorRouter);
-app.use('/api/patients', patientRouter);
+app.use('/api/services', serviceRouter);
 app.use('/api/medical_appointments', medicalAppointmentRouter);
 app.use('/api/time_entries', timeEntryRouter);
 

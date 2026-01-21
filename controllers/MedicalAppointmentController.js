@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-const MedicalAppointment = require('../models/MedicalAppointments');
+const MedicalAppointment = require('../models/MedicalAppointment');
+const { decrypt } = require('../config/crypto');
 
 const index = async (req, res) => {
     const medicalAppointments = await MedicalAppointment.find();
@@ -16,18 +17,7 @@ const get = async (req, res) => {
 const getByDoctor = async (req, res) => {
     const doctorId = req.params.id;
     
-    const medicalAppointments = await MedicalAppointment.find({ doctor: doctorId}).populate('patient', 'name surname').exec();
-
-    res.status(200).json({
-        medicalAppointments: medicalAppointments
-    })
-
-}
-
-const getByPatient = async (req, res) => {
-    const patientId = req.params.id;
-    
-    const medicalAppointments = await MedicalAppointment.find({ patient: patientId}).populate('patient', 'name surname').exec();
+    const medicalAppointments = await MedicalAppointment.find({ doctor: doctorId}).populate('service', 'name surname').exec();
 
     res.status(200).json({
         medicalAppointments: medicalAppointments
@@ -47,9 +37,9 @@ const store = async (req, res) => {
             })
         }
     
-        const { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
+        const { doctor, date, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
         
-        const newMedicalAppointment = new MedicalAppointment({ doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
+        const newMedicalAppointment = new MedicalAppointment({ doctor, date, service, total, serviceValue, percentageToDoctor, assignedAmount});
     
         await newMedicalAppointment.save();
     
@@ -80,9 +70,9 @@ const update = async (req, res) => {
         }
     
         const {id} = req.params;
-        const { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
+        const { doctor, date,  service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
     
-        const medicalAppointment = await MedicalAppointment.findByIdAndUpdate(id, { doctor, patient, date, invoiceNumber, service, total, serviceValue, percentageToDoctor, assignedAmount});
+        const medicalAppointment = await MedicalAppointment.findByIdAndUpdate(id, { doctor, date, service, total, serviceValue, percentageToDoctor, assignedAmount});
     
         if(!medicalAppointment){
             return res.status(200).json({
@@ -127,7 +117,6 @@ module.exports = {
     index,
     get, 
     getByDoctor,
-    getByPatient,
     store,
     update,
     destroy

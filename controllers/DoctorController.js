@@ -1,10 +1,18 @@
 const { validationResult } = require("express-validator");
 const Doctor = require("../models/Doctor");
+const { encrypt, decrypt } = require('../config/crypto');
 
 // index
 const index = async (req, res) => {
     const doctors = await Doctor.find();
-    res.status(200).json({doctors: doctors})
+
+    const decryptedDoctors = doctors.map( doctor => ({
+        ...doctor.toObject(),
+        name: decrypt(doctor.name),
+        surname: decrypt(doctor.surname)
+    }))
+
+    res.status(200).json({doctors: decryptedDoctors})
 }
 
 // get
@@ -12,7 +20,14 @@ const show = async (req, res) => {
     const { id } = req.params;
     const doctor = await Doctor.findById(id)
 
-    res.status(200).json({ doctor: doctor})
+    const decryptedDoctor = {
+        ...doctor.toObject(),
+        name: decrypt(doctor.name),
+        surname: decrypt(doctor.surname)
+    }
+    
+
+    res.status(200).json({ doctor: decryptedDoctor})
 }
 
 // store
@@ -25,7 +40,10 @@ const store = async (req, res) => {
             return res.status(200).json({result: false, message: validations.errors[0].msg})
         }
 
-        const { name, surname, specialty } = req.body;
+        let { name, surname, specialty } = req.body;
+
+        name = encrypt(name);
+        surname = encrypt(surname);
 
         const newDoctor = new Doctor({ name, surname, specialty})
         
@@ -52,10 +70,14 @@ const update = async (req, res) => {
         if(!validations.isEmpty()){
             return res.status(200).json({ result: false, message: validations.errors[0].msg})
         }
+        
     
         const { id } = req.params;
-        const { name, surname, specialty } = req.body;
-    
+        let { name, surname, specialty } = req.body;
+        
+        name= encrypt(name);
+        surname = encrypt(surname);
+
         const doctor = await Doctor.findByIdAndUpdate(id, { name, surname, specialty});
         
         if(!doctor){
