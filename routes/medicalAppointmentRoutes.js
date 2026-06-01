@@ -11,11 +11,37 @@ router.get('/doctor/:id', authMiddleware, medicalAppointmentController.getByDoct
 router.post('/', authMiddleware, [
     check('doctor').notEmpty().trim().withMessage('Devi selezionare il medico'),
     check('date').notEmpty().trim().withMessage('Devi inserire la data della visita').isISO8601().withMessage('La scadenza deve essere una data valida'),
-    check('service').notEmpty().trim().withMessage('Devi selezionare la prestazione'),
-    check('total').notEmpty().trim().withMessage('Devi inserire il totale della fattura').isNumeric().withMessage('Il valore del totale della fattura deve essere numerico'),
-    check('serviceValue').notEmpty().trim().withMessage('Devi inserire il valore della prestazione').isNumeric().withMessage('Il valore della prestazione deve essere numerico'),
-    check('percentageToDoctor').notEmpty().trim().withMessage('Devi inserire la percentuale del medico').isNumeric().withMessage('Il valore della percentuale del medico deve essere numerico'),
-    check('assignedAmount').notEmpty().trim().withMessage('Devi inserire il valore della somma assegnata').isNumeric().withMessage('Il valore della somma assegnata deve essere numerico'),
+    check('services')
+      .isArray({ min: 1 })
+      .withMessage('Devi inserire almeno una prestazione'),
+
+    check('services.*.service')
+      .notEmpty()
+      .withMessage('Devi selezionare la prestazione'),
+
+    check('services.*.total')
+      .notEmpty()
+      .withMessage('Devi inserire il totale della fattura')
+      .isNumeric()
+      .withMessage('Il totale deve essere numerico'),
+
+    check('services.*.serviceValue')
+      .notEmpty()
+      .withMessage('Devi inserire il valore della prestazione')
+      .isNumeric()
+      .withMessage('Il valore deve essere numerico'),
+
+    check('services.*.percentageToDoctor')
+      .notEmpty()
+      .withMessage('Devi inserire la percentuale del medico')
+      .isNumeric()
+      .withMessage('La percentuale deve essere numerica'),
+
+    check('services.*.assignedAmount')
+      .notEmpty()
+      .withMessage('Devi inserire la somma assegnata')
+      .isNumeric()
+      .withMessage('La somma assegnata deve essere numerica'),
 ], medicalAppointmentController.store);
 router.put('/:id', authMiddleware, [
     check('doctor').notEmpty().trim().withMessage('Devi selezionare il medico'),

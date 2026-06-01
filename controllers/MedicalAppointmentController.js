@@ -36,12 +36,20 @@ const store = async (req, res) => {
                 message: validations.errors[0].msg
             })
         }
-    
-        const { doctor, date, service, total, serviceValue, percentageToDoctor, assignedAmount} = req.body;
         
-        const newMedicalAppointment = new MedicalAppointment({ doctor, date, service, total, serviceValue, percentageToDoctor, assignedAmount});
-    
-        await newMedicalAppointment.save();
+        const { doctor, date, services } = req.body;
+
+        const inserted = await MedicalAppointment.insertMany(
+            services.map((s) => ({
+                doctor,
+                date,
+                service: s.service,
+                total: s.total,
+                serviceValue: s.serviceValue,
+                percentageToDoctor: s.percentageToDoctor,
+                assignedAmount: s.assignedAmount,
+            }))
+        );
     
         res.status(200).json({
             result: true,
